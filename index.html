@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Decryptor</title>
+    <script>
+        async function decryptAES() {
+            const encryptedText = document.getElementById("encryptedText").value;
+            const secretKey = document.getElementById("secretKey").value;
+            const output = document.getElementById("output");
+
+            output.textContent = ""; // Clear output before processing
+
+            try {
+                if (!encryptedText) {
+                    throw new Error("Encrypted text cannot be empty.");
+                }
+
+                if (!secretKey) {
+                    throw new Error("Secret key cannot be empty.");
+                }
+
+                if (secretKey.length !== 32) {
+                    throw new Error("Secret key must be exactly 32 characters (256 bits).");
+                }
+
+                const keyBytes = new TextEncoder().encode(secretKey);
+                const encryptedBytes = Uint8Array.from(atob(encryptedText), c => c.charCodeAt(0));
+
+                const cryptoKey = await crypto.subtle.importKey(
+                    "raw",
+                    keyBytes,
+                    { name: "AES-CBC" },
+                    false,
+                    ["decrypt"]
+                );
+
+                // AES CBC mode with no IV (Initial Vector is all zeroes)
+                const iv = new Uint8Array(16).fill(0);
+
+                const decryptedBytes = await crypto.subtle.decrypt(
+                    { name: "AES-CBC", iv },
+                    cryptoKey,
+                    encryptedBytes
+                );
+
+                const decryptedText = new TextDecoder().decode(decryptedBytes);
+
+                output.textContent = `Decrypted Text: ${decryptedText}`;
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>AES Decryptor</h1>
+    <label for="encryptedText">Encrypted Text (Base64):</label><br>
+    <textarea id="encryptedText" rows="4" cols="50"></textarea><br><br>
+
+    <label for="secretKey">Secret Key (256-bit / 32 chars):</label><br>
+    <input type="text" id="secretKey" maxlength="32" size="35"><br><br>
+
+    <button onclick="decryptAES()">Decrypt</button>
+
+    <p id="output"></p>
+</body>
+</html>
