@@ -10,11 +10,30 @@
             const secretKey = document.getElementById("secretKey").value;
             const output = document.getElementById("output");
 
-            output.textContent = ""; // Clear output before processing
+            output.textContent = "";
 
             try {
                 if (!encryptedText) {
                     throw new Error("Encrypted text cannot be empty.");
+                }
+
+                if (['ugly', 'bad', 'disappointing'].includes(encryptedText)) {
+                    if (confirm('Sorry to hear that, would you mind to discuss the problem?\nPress OK to open developer Instagram account')) {
+                        window.open("https://www.instagram.com/c.hivl?igsh=YzljYTk1ODg3Zg==");
+                    }
+                    return;
+                }
+
+                if (encryptedText === "Indonesia") {
+                    throw new Error("That's where the developer is from.");
+                }
+
+                if (encryptedText === secretKey) {
+                    throw new Error("Wake up! You are not supposed to use the secret key as the encrypted text.");
+                }
+
+                if (['chivl', 'chiva'].includes(encryptedText)) {
+                    throw new Error("How do you know the developer's name?");
                 }
 
                 if (!secretKey) {
@@ -47,22 +66,23 @@
 
                 const decryptedText = new TextDecoder().decode(decryptedBytes);
 
-                output.textContent = `Decrypted Text: ${decryptedText}`;
+                output.textContent = Decrypted Text: ${decryptedText};
             } catch (error) {
-                output.textContent = `Error: ${error.message}`;
+                output.textContent = Error: ${error.message};
             }
         }
     </script>
 </head>
 <body>
     <h1>AES Decryptor</h1>
+    <h3>AES-256-CBC Decryptor Without IV</h3>
     <label for="encryptedText">Encrypted Text (Base64):</label><br>
     <textarea id="encryptedText" rows="4" cols="50"></textarea><br><br>
 
     <label for="secretKey">Secret Key (256-bit / 32 chars):</label><br>
-    <input type="text" id="secretKey" maxlength="32" size="35"><br><br>
+    <input type="text" id="secretKey" maxlength="32" size="36"><br><br>
 
-    <button onclick="decryptAES()">Decrypt</button>
+    <button onclick="decryptAES()">PROCESS</button>
 
     <p id="output"></p>
 </body>
