@@ -17,7 +17,7 @@
                     throw new Error("Encrypted text cannot be empty.");
                 }
 
-                if (['ugly', 'bad', 'disappointing'].includes(encryptedText)) {
+                if (encryptedText === "ugly" || encryptedText === "bad" || encryptedText === "disappointing") {
                     if (confirm('Sorry to hear that, would you mind to discuss the problem?\nPress OK to open developer Instagram account')) {
                         window.open("https://www.instagram.com/c.hivl?igsh=YzljYTk1ODg3Zg==");
                     }
@@ -25,7 +25,7 @@
                 }
 
                 if (encryptedText === "Indonesia") {
-                    throw new Error("That's where the developer is from.");
+                    throw new Error("That's where the developer is from 😊");
                 }
 
                 if (encryptedText === secretKey) {
@@ -66,16 +66,16 @@
 
                 const decryptedText = new TextDecoder().decode(decryptedBytes);
 
-                output.textContent = Decrypted Text: ${decryptedText};
+                output.textContent = `Decrypted Text: ${decryptedText}`;
             } catch (error) {
-                output.textContent = Error: ${error.message};
+                output.textContent = `Error: ${error.message}`;
             }
         }
     </script>
 </head>
 <body>
     <h1>AES Decryptor</h1>
-    <h3>AES-256-CBC Decryptor Without IV</h3>
+    <h3>AES-CBC Decryptor Without IV</h3>
     <label for="encryptedText">Encrypted Text (Base64):</label><br>
     <textarea id="encryptedText" rows="4" cols="50"></textarea><br><br>
 
